@@ -1,0 +1,26 @@
+[type="file"] {
+    overflow: hidden;
+}
+
+.form_upload {
+    padding: 10px 0;
+}
+
+/* #img-preview-1 {
+    display: none; 
+    height: 10px;
+}
+
+#img-preview-1 img {
+    width: 100%;
+    height: auto;
+    display: block;
+} */
+
+.wrapper {
+    text-align : center;
+}
+.image-preview, .form {
+    display: inline-block;
+    vertical-align: top;
+}
