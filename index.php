@@ -1,6 +1,10 @@
 <?php
 require_once('header.php');
 $files = glob("registered/*.jpg");
+foreach ($files as $file) {
+    echo 'Files >>> ' . basename($file, ".jpg");
+    echo 'clean >>> ' . intval(basename($file, ".jpg"));
+}
 ?>
 
 <center id="container">
@@ -11,6 +15,9 @@ $files = glob("registered/*.jpg");
     <span class="error"><?php if (isset($_GET['error']) && !empty($_GET['error'])) {
                             echo $_GET['error'];
                         } ?></span>
+    <?php 
+        if (in_array())
+    ?>
     <div class="wrapper">
 
         <div id="img-preview-1" class="image-preview">
