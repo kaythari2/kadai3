@@ -1,5 +1,6 @@
 <?php
 require_once('header.php');
+$files = glob("registered/*.jpg");
 ?>
 
 <center id="container">
@@ -7,10 +8,11 @@ require_once('header.php');
     <span style="color: green;"><?php if (isset($_GET["status"]) && $_GET["status"] == "registered") {
                                     echo "登録に成功しました。";
                                 } ?></span>
-    <span style="color: red;"><?php if (isset($_GET['e']) && !empty($_GET['e'])) {
-                                    echo $_GET['e'];
-                                } ?></span>
+    <span class="error"><?php if (isset($_GET['error']) && !empty($_GET['error'])) {
+                            echo $_GET['error'];
+                        } ?></span>
     <div class="wrapper">
+
         <div id="img-preview-1" class="image-preview">
         </div>
         <div class="form">
@@ -50,6 +52,23 @@ require_once('header.php');
     <form action="#" name="delete_all">
         <button type="submit">全て削除</button>
     </form>
+
+    <?php
+    foreach ($files as $file) {
+    ?>
+        <form action="index.php" method="post" class="delete-submit">
+            <div id="image-frame">
+                <div id="image-preview">
+                    <img src="<?php echo $file; ?>" height="300" width='auto' />
+                </div>
+                <input type="hidden" name="image-name" value="<?php echo $file; ?>">
+                <input type="submit" name="delete" class="delete" value="削除">
+            </div>
+        </form>
+    <?php
+    }
+    ?>
+
 </center>
 
 <?php

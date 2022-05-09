@@ -49,10 +49,15 @@ center {
 .wrapper {
     text-align : center;
     overflow: visible;
-    display: inline-flex;
+    display: block;
+    align-items: center;
 }
 
 .image-preview, .form {
     display: inline-block;
     vertical-align: top;
+}
+
+.error {
+    color: red;
 }
