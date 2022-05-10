@@ -1,10 +1,23 @@
 <?php
 require_once('header.php');
+
 $files = glob("registered/*.jpg");
-foreach ($files as $file) {
-    echo 'Files >>> ' . basename($file, ".jpg");
-    echo 'clean >>> ' . intval(basename($file, ".jpg"));
+
+if (isset($_POST["delete"])) {
+	unlink($_POST["image-name"]);
+    header('Location: index.php');
 }
+
+if (isset($_POST["delete-all"])) {
+	foreach ($files as $file) {
+		unlink($file);
+	}
+    header('Location: index.php');
+}
+
+$cleaned = array_map(function ($file) {
+    return intval(basename($file, ".jpg"));
+}, $files);
 ?>
 
 <center id="container">
@@ -15,13 +28,8 @@ foreach ($files as $file) {
     <span class="error"><?php if (isset($_GET['error']) && !empty($_GET['error'])) {
                             echo $_GET['error'];
                         } ?></span>
-    <?php 
-        if (in_array())
-    ?>
-    <div class="wrapper">
 
-        <div id="img-preview-1" class="image-preview">
-        </div>
+    <div class="<?php echo in_array('1', $cleaned) ? 'hide' : 'wrapper' ?>">
         <div class="form">
             <form action="upload_file.php" class="form_upload" method="POST" enctype="multipart/form-data">
                 <input type="file" id="file1" name="file1">
@@ -32,9 +40,7 @@ foreach ($files as $file) {
 
     <br>
 
-    <div class="wrapper">
-        <div id="img-preview-2" class="image-preview">
-        </div>
+    <div class="<?php echo in_array('2', $cleaned) ? 'hide' : 'wrapper' ?>">
         <div class="form">
             <form action="upload_file.php" class="form_upload" method="POST" enctype="multipart/form-data">
                 <input type="file" name="file2" id="file2">
@@ -45,9 +51,7 @@ foreach ($files as $file) {
 
     <br>
 
-    <div class="wrapper">
-        <div id="img-preview-3" class="image-preview">
-        </div>
+    <div class="<?php echo in_array('3', $cleaned) ? 'hide' : 'wrapper' ?>">
         <div class="form">
             <form action="upload_file.php" class="form_upload" method="POST" enctype="multipart/form-data">
                 <input type="file" name="file3" id="file3">
@@ -56,22 +60,25 @@ foreach ($files as $file) {
         </div>
     </div>
 
-    <form action="#" name="delete_all">
-        <button type="submit">全て削除</button>
+    <form action="index.php" class="<?php echo empty($files) ? 'hide' : 'delete-all-form' ?>" method="POST">
+        <button type="submit" name='delete-all'>すべて削除</button>
     </form>
 
     <?php
     foreach ($files as $file) {
     ?>
-        <form action="index.php" method="post" class="delete-submit">
-            <div id="image-frame">
-                <div id="image-preview">
-                    <img src="<?php echo $file; ?>" height="300" width='auto' />
-                </div>
-                <input type="hidden" name="image-name" value="<?php echo $file; ?>">
-                <input type="submit" name="delete" class="delete" value="削除">
+        <div class="uploaded-wrapper">
+            <div id="img-preview" class="image-preview">
+                <img src="<?php echo $file; ?>" height="300" width='auto' />
             </div>
-        </form>
+            <div class="form">
+                <form action="index.php" method="POST" class="delete-form">
+                    <input type="hidden" name="image-name" value="<?php echo $file; ?>">
+                    <button type="submit" name='delete'>削除</button>
+                </form>
+            </div>
+        </div>
+
     <?php
     }
     ?>

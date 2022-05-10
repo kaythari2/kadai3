@@ -1,9 +1,9 @@
-[type="file"] {
-    overflow: hidden;
-}
-
 center {
     vertical-align: middle;
+}
+
+button {
+    margin: 10px;
 }
 
 .form_upload {
@@ -11,19 +11,19 @@ center {
 }
 
 #img-preview-1 {
-    display: none; 
+    display: none;
     max-width: 100px;
     max-height: 100px;
 }
 
 #img-preview-2 {
-    display: none; 
+    display: none;
     max-width: 100px;
     max-height: 100px;
 }
 
 #img-preview-3 {
-    display: none; 
+    display: none;
     max-width: 100px;
     max-height: 100px;
 }
@@ -46,14 +46,26 @@ center {
     display: block;
 }
 
+.hide {
+    display: none;
+    visibility: hidden;
+}
+
 .wrapper {
-    text-align : center;
+    text-align: center;
     overflow: visible;
     display: block;
     align-items: center;
 }
 
-.image-preview, .form {
+.uploaded-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-preview,
+.form {
     display: inline-block;
     vertical-align: top;
 }

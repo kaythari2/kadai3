@@ -1,12 +1,10 @@
 <?php
-// session_start();
 $tmp_directory = "tmp/";
 $imageName = (isset($_POST['upload_img_1'])) ? '001.jpg' : ((isset($_POST['upload_img_2'])) ? '002.jpg' : ((isset($_POST['upload_img_3'])) ? '003.jpg' : (isset($_POST['image-name']) ? $_POST['image-name'] : '')
 ));
 
 if (isset($_POST['register'])) {
     $reged_directory = "registered/";
-    echo 'imageName is >>> ' . $_POST['image-name'];
     if (!isset($imageName)) {
         $imageName = $_POST['image-name'];
     }
@@ -61,7 +59,7 @@ if (move_uploaded_file($_FILES[$fileName]["tmp_name"], $filepath)) {
         <form action="" method="post">
             <?php
             if (isset($filepath) && $filepath != '') {
-                echo "<img src=" . $filepath . " height=auto width=300 />";
+                echo "<img src=" . $filepath . " height='300' width='auto' />";
             }
             ?>
             <br>
