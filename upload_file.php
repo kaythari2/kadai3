@@ -1,7 +1,16 @@
 <?php
+session_start();
 $tmp_directory = "tmp/";
-$imageName = (isset($_POST['upload_img_1'])) ? '001.jpg' : ((isset($_POST['upload_img_2'])) ? '002.jpg' : ((isset($_POST['upload_img_3'])) ? '003.jpg' : (isset($_POST['image-name']) ? $_POST['image-name'] : '')
-));
+
+if (isset($_POST['upload_img_1'])) {
+    $imageName = '001.jpg';
+} elseif (isset($_POST['upload_img_2'])) {
+    $imageName = '002.jpg';
+} elseif (isset($_POST['upload_img_3'])) {
+    $imageName = '003.jpg';
+} elseif (isset($_POST['image-name'])) {
+    $imageName = $_POST['image-name'];
+}
 
 if (isset($_POST['register'])) {
     $reged_directory = "registered/";
@@ -21,7 +30,16 @@ if (isset($_POST['register'])) {
     }
     return;
 }
-$fileName = (isset($_POST['upload_img_1'])) ? 'file1' : ((isset($_POST['upload_img_2'])) ? 'file2' : ((isset($_POST['upload_img_3'])) ? 'file3' : null));
+
+if (isset($_POST['upload_img_1'])) {
+    $fileName = 'file1';
+} elseif(isset($_POST['upload_img_2'])) {
+    $fileName = 'file2';
+} elseif(isset($_POST['upload_img_3'])) {
+    $fileName = 'file3';
+} else {
+    $fileName = null;
+}
 
 if (!file_exists($tmp_directory)) {
     mkdir($tmp_directory);
@@ -31,22 +49,29 @@ $uploadOk = false;
 
 $file = $_FILES[$fileName];
 if ($file["size"] > 2000000) {
-    header("Location: index.php?error=画像は2MB以内で入力して下さい。");
+    $_SESSION['error'] = '画像は2MB以内で入力して下さい。';
+    header("Location: index.php");
     return;
 }
 
-$target_file = basename($file["name"]);
-$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-if ($imageFileType != "jpg") {
-    header("Location: index.php?error=拡張子はjpgで入力して下さい。");
-    return;
-}
+$file_mime_type = $file["type"];
+$f_info = finfo_open(FILEINFO_MIME_TYPE); 
+$mime = finfo_file($f_info, $file['tmp_name']);
+finfo_close($f_info);
 
-if (move_uploaded_file($_FILES[$fileName]["tmp_name"], $filepath)) {
-    $uploadOk = true;
+if ($mime == "image/jpeg" || $mime == "image/jpg") {
+    if (move_uploaded_file($_FILES[$fileName]["tmp_name"], $filepath)) {
+        $uploadOk = true;
+    } else {
+        $_SESSION['error'] = 'error';
+        header("Location: index.php");
+    }
 } else {
-    header("Location: index.php?error=error");
+    $_SESSION['error'] = '拡張子はjpgで入力して下さい。';
+    header("Location: index.php");
+    return;
 }
+
 ?>
 
 <center>
